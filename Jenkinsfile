@@ -7,7 +7,7 @@ pipeline {
     }
 
     environment {
-        DOCKER_IMAGE = 'alison0309/my-java-app:latest'  // Change this to your real Docker Hub repo
+        DOCKER_IMAGE = 'alison0309/my-java-app:latest'
     }
 
     stages {
@@ -43,7 +43,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("${DOCKER_IMAGE}")
+                    bat "docker build -t %DOCKER_IMAGE% ."
                 }
             }
         }
@@ -51,8 +51,8 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
-                        docker.image("${DOCKER_IMAGE}").push()
+                    withDockerRegistry([credentialsId: 'docker-hub-credentials-id', url: '']) {
+                        bat "docker push %DOCKER_IMAGE%"
                     }
                 }
             }
@@ -64,7 +64,7 @@ pipeline {
                     bat '''
                         docker stop my-java-app || exit 0
                         docker rm my-java-app || exit 0
-                        docker run -d --name my-java-app -p 8082:8082 ${DOCKER_IMAGE}
+                        docker run -d --name my-java-app -p 8082:8082 %DOCKER_IMAGE%
                     '''
                 }
             }

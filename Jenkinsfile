@@ -7,8 +7,8 @@ pipeline {
     }
 
     environment {
-        DOCKER_IMAGE = 'alison0309/my-java-app .'
-    }   
+        DOCKER_IMAGE = 'alison0309/my-java-app:latest'  // Fixed the Docker image name
+    }
 
     stages {
         stage('Checkout') {
@@ -43,7 +43,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    bat "docker build -t %DOCKER_IMAGE% ."
+                    bat "docker build -t ${DOCKER_IMAGE} ."  // Fixed string interpolation for Docker image
                 }
             }
         }
@@ -52,9 +52,9 @@ pipeline {
             steps {
                 script {
                     bat '''
-                        docker stop my-java-app || exit 0
-                        docker rm my-java-app || exit 0
-                        docker run -d --name java-staging-2 -p 8082:8082 my-java-app
+                        docker stop java-staging-2 || exit 0
+                        docker rm java-staging-2 || exit 0
+                        docker run -d --name java-staging-2 -p 8082:8082 ${DOCKER_IMAGE}  // Fixed string interpolation
                     '''
                 }
             }

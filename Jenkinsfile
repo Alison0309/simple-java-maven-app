@@ -7,8 +7,8 @@ pipeline {
     }
 
     environment {
-        DOCKER_IMAGE = 'alison0309/my-java-app:latest'
-    }
+        DOCKER_IMAGE = 'alison0309/my-java-app .'
+    }   
 
     stages {
         stage('Checkout') {
@@ -54,7 +54,7 @@ pipeline {
                     bat '''
                         docker stop my-java-app || exit 0
                         docker rm my-java-app || exit 0
-                        docker run -d --name my-java-app -p 8082:8082 %DOCKER_IMAGE%
+                        docker run -d --name java-staging-2 -p 8082:8082 my-java-app
                     '''
                 }
             }

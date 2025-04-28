@@ -25,6 +25,6 @@ public class AppTest
     @Test
     public void testMessageUpperCase() {
         App app = new App();
-        assertEquals("HELLO FROM SPARK WEB SERVER!!!COME", app.getMessageUpperCase());
+        assertEquals("HELLO FROM SPARK WEB SERVER! WELCOME TO THE JAVA WORLD!", app.getMessageUpperCase());
     }
 }
